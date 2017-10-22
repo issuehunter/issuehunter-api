@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"time"
 
 	"github.com/julienschmidt/httprouter"
 )
@@ -13,9 +14,12 @@ type Logger struct {
 	handler http.Handler
 }
 
-func (l *Logger) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	log.Printf("%s %s", r.Method, r.URL.Path)
-	l.handler.ServeHTTP(w, r)
+func (l *Logger) ServeHTTP(w http.ResponseWriter, req *http.Request) {
+	start := time.Now()
+
+	l.handler.ServeHTTP(w, req)
+
+	log.Printf("- %s %s (%s)", req.Method, req.URL.Path, time.Since(start).String())
 }
 
 func serveIndex(w http.ResponseWriter, req *http.Request, _ httprouter.Params) {

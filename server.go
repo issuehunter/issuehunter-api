@@ -13,7 +13,7 @@ type Logger struct {
 	handler http.Handler
 }
 
-func (l Logger) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+func (l *Logger) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	log.Printf("%s %s", r.Method, r.URL.Path)
 	l.handler.ServeHTTP(w, r)
 }
@@ -39,7 +39,7 @@ func App() http.Handler {
 	router.GET("/", serveIndex)
 	router.ServeFiles("/stylesheets/*filepath", http.Dir("static/stylesheets"))
 
-	return Logger{router}
+	return &Logger{router}
 }
 
 func main() {

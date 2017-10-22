@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 	"time"
 
 	"github.com/julienschmidt/httprouter"
@@ -47,7 +48,12 @@ func App() http.Handler {
 }
 
 func main() {
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080"
+	}
+
 	// Fire up the server
-	fmt.Println("Server listening on port 3000")
-	http.ListenAndServe("localhost:3000", App())
+	fmt.Println("Server listening on port " + port)
+	http.ListenAndServe(":"+port, App())
 }

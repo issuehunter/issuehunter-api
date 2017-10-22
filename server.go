@@ -8,6 +8,7 @@ import (
 	"github.com/julienschmidt/httprouter"
 )
 
+// Logger is a cool type
 type Logger struct {
 	handler http.Handler
 }
